@@ -5,6 +5,8 @@ import {
   type UseQueryOptions,
 } from "@tanstack/react-query";
 
+const BASE_URL = import.meta.env.VITE_API_URL || "";
+
 export interface User {
   id: string;
   name: string;
@@ -51,7 +53,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   headers.set("Content-Type", "application/json");
   const token = tokenGetter();
   if (token) headers.set("Authorization", `Bearer ${token}`);
-  const res = await fetch(`/api${path}`, { ...init, headers });
+  const res = await fetch(`${BASE_URL}/api${path}`, { ...init, headers });
   const text = await res.text();
   const data = text ? JSON.parse(text) : null;
   if (!res.ok) {
